@@ -1,0 +1,54 @@
+{
+  "name": "scheduler",
+  "version": "0.0.1",
+  "description": "simple digital schedule",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "history": "^1.13.0",
+    "lodash": "^3.10.1",
+    "react": "^0.14.2",
+    "react-dom": "^0.14.2",
+    "react-router": "^1.0.0-rc4",
+    "redux": "^3.0.4",
+    "redux-simple-router": "0.0.6"
+  },
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "babel-core": "^5.8.23",
+    "babel-loader": "^5.3.1",
+    "babel-plugin-react-transform": "^1.1.1",
+    "css-loader": "^0.23.0",
+    "express": "^4.13.3",
+    "immutable": "^3.7.5",
+    "moment": "^2.10.6",
+    "node-sass": "^3.4.2",
+    "nodemon": "^1.8.1",
+    "react-redux": "^4.0.0",
+    "react-server": "0.0.1",
+    "react-transform-catch-errors": "^1.0.0",
+    "react-transform-hmr": "^1.0.1",
+    "redbox-react": "^1.1.1",
+    "redux-devtools": "^2.1.5",
+    "sass-loader": "^3.1.1",
+    "serviceworker-cache-polyfill": "^3.0.0",
+    "serviceworker-loader": "^0.1.0",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.3",
+    "webpack-dev-middleware": "^1.2.0",
+    "webpack-hot-middleware": "^2.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/songawee/scheduler.git"
+  },
+  "author": "Dennis Johnson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/songawee/scheduler/issues"
+  },
+  "homepage": "https://github.com/songawee/scheduler#readme"
+}

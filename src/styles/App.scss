@@ -1,0 +1,18 @@
+$height: 3rem;
+
+.timeline {
+  border: 1rem solid #333;
+  background-color: #ddd;
+  box-sizing: border-box;
+  height: $height;
+  position: fixed;
+  margin: auto;
+  padding: 0;
+  top: 0;
+  width: 100%;
+
+  .progress-bar {
+    display: inline-block;
+    height: $height - 2;
+  }
+}
