@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 
 import Event from './Event';
 
-import '../styles/App.scss';
+import '../styles/Viewer.scss';
 
 class EventsContainer extends Component {
   shouldComponentUpdate(nextProps, nextState) {

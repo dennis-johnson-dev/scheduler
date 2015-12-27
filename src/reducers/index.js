@@ -1,13 +1,14 @@
 import Immutable from 'immutable';
 import moment from 'moment';
+import { routeReducer as routing } from 'redux-simple-router';
 import { combineReducers } from 'redux';
 
 import { ADD_EVENT, CURRENT_TIME_SET, STATE_RESET } from '../constants';
 
 const initialState = (numOfItems) => {
   const getStartStop = (currentTime, idx) => {
-    const startTime = moment(currentTime).add(10 * idx, 'seconds');
-    const endTime = moment(currentTime).add(10 * (idx + 1), 'seconds');
+    const startTime = moment(currentTime).add(5 * idx, 'seconds');
+    const endTime = moment(currentTime).add(5 * (idx + 1), 'seconds');
     return Immutable.Map({
       startTime,
       endTime
@@ -52,7 +53,6 @@ const events = (state = initialState, action) => {
         text: action.payload
       }));
     case STATE_RESET:
-      console.log('resetting state')
       return initialState;
     default:
       return state;
@@ -88,5 +88,6 @@ export default combineReducers({
   currentTime,
   events,
   maxDuration,
+  routing,
   startTime
 });

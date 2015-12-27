@@ -4,6 +4,8 @@ var webpack = require('webpack');
 var config = require('./webpack.config');
 
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var compiler = webpack(config);
 
 app.use(require('webpack-dev-middleware')(compiler, {
@@ -16,11 +18,19 @@ app.use(express.static('./'));
 
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/index.html');
 });
 
-app.listen(3000, 'localhost', function(err) {
+io.on('connection', function(socket) {
+  console.log('a user has connected');
+  socket.on('yo', function(msg) {
+    console.log('received yo');
+    io.emit('yo received');
+  });
+});
+
+http.listen(3000, 'localhost', function(err) {
   if (err) {
     console.log(err);
     return;
