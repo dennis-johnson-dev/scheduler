@@ -23,7 +23,7 @@ export default class CreatForm extends React.Component {
         <div className="event event-duration">
           <label>Duration:</label>
           <input
-            onChange={ this.props.handleChange.bind(this, "duration", "text") }
+            onChange={ (e) => this.props.handleChange("duration", "text", e) }
             name="duration"
             placeholder="seconds"
             ref="duration"
@@ -35,13 +35,13 @@ export default class CreatForm extends React.Component {
           <input
             type="checkbox"
             checked={ this.props.hasDate }
-            onChange={ this.props.handleChange.bind(this, "hasDate", "checkbox") } />
+            onChange={ (e) => this.props.handleChange("hasDate", "checkbox", e) } />
           {
             this._getDatePicker()
           }
         </div>
         <div className="event event-add">
-          <button onClick={ this.props.addEvent.bind(this) }>Add Event</button>
+          <button onClick={ (e) => this.props.addEvent(e) }>Add Event</button>
         </div>
       </div>
     );
@@ -58,7 +58,7 @@ export default class CreatForm extends React.Component {
           className={ className }
           disabled={ !this.props.hasDate }
           selected={ this.props.date }
-          onChange={ this.props.handleChange.bind(this, "date", "date") } />
+          onChange={ (e) => this.props.handleChange("date", "date", e) } />
       </div>
     );
   }
