@@ -19,6 +19,18 @@
     }
   }
 
+  label {
+    display: inline-block;
+  }
+
+  .datepicker__input-container {
+    display: inline-block;
+  }
+
+  .deselected {
+    background-color: #666;
+  }
+
   .event-title-bar {
     display: inline-block;
   }
@@ -31,4 +43,25 @@
 .events {
   margin: 0 0 0 0;
   padding: 3rem 0 0 0;
+}
+
+.create-event {
+  .event-form {
+    margin-top: 1rem;
+
+    .event {
+      margin-bottom: 0.3rem;
+
+      label {
+        margin-right: 0.3rem;
+      }
+    }
+
+    .event-duration {
+    }
+
+    .event-add {
+      margin-top: 0.5rem;
+    }
+  }
 }

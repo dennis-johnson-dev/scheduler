@@ -1,83 +1,103 @@
+import moment from 'moment';
 import React from 'react';
+import uuid from 'uuid';
+
+import CreateForm from './forms/CreateForm';
+import EventList from './EventList';
+
+import '../styles/event.scss';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default class CreateEvent extends React.Component {
+  initialEventState = {
+    duration: 12,
+    date: moment(),
+    hasDate: false,
+    title: 'hai'
+  }
+
+  initialState = {
+    events: []
+  }
+
   constructor(props, context) {
     super(props, context);
+
     this.state = {
-      events: [
-        {
-          duration: 10,
-          title: 'yo'
-        },
-        {
-          duration: 10,
-          title: 'hey'
-        }
-      ],
-      showForm: false
+      ...this.initialState,
+      ...this.initialEventState
     };
+
+    this.typeValueMap = {
+      date: e => e,
+      checkbox: e => e.target.checked,
+      text: e => e.target.value
+    };
+
+    this._onSubmit = this._onSubmit.bind(this);
+    this._addEvent = this._addEvent.bind(this);
+    this._handleChange = this._handleChange.bind(this);
   }
 
   render() {
     return (
-      <div>
+      <div className="create-event">
         <div className="add-event-form">
-          <form onSubmit={ this._onSubmit.bind(this) }>
+          <form onSubmit={ this._onSubmit }>
             <input
               className=""
               type="submit"
               value="Submit" />
-            <button onClick={ this._showForm.bind(this) }>+</button>
+            <CreateForm
+              addEvent={ this._addEvent }
+              date={ this.state.date }
+              duration={ this.state.duration }
+              handleChange={ this._handleChange }
+              hasDate={ this.state.hasDate }
+              title={ this.state.title } />
           </form>
-          { this._getAddForm() }
         </div>
-        <ul>
-          {
-            this.state.events.map((event, index) => {
-              return <li key={ index }>{ event.title }, { event.duration }</li>;
-            })
-          }
-        </ul>
+        <EventList events={ this.state.events } />
       </div>
     );
   }
 
-  _getAddForm() {
-    if (this.state.showForm) {
-      return (
-        <div>
-          <label>Title:</label>
-          <input type="text" ref="title" name="title" />
-          <input type="number" ref="duration" name="duration" placeholder="seconds"/>
-          <button onClick={ this._addEvent.bind(this) }>Add Event</button>
-        </div>
+  _handleChange(stateKey, type, val) {
+    const value = this._getValue(type, val);
+
+    this.setState({
+      [stateKey]: value
+    });
+  }
+
+  _getValue(type, val) {
+    if (!this.typeValueMap[type]) {
+      throw new Error(
+        `Missing \"${type}\" type of input, please enter a valueMapper function in the constructor for type \"${type}\"`
       );
     }
+
+    return this.typeValueMap[type](val);
   }
 
   _addEvent(e) {
     e.preventDefault();
-    if (this.refs.title.value) {
-      this.state.events.push({
-        duration: this.refs.duration.value,
-        title: this.refs.title.value
-      });
+    this.state.events.push({
+      date: this.state.hasDate ? this.state.date : null,
+      duration: this.state.duration,
+      hasDate: this.state.hasDate,
+      title: this.state.title,
+      id: uuid.v4()
+    });
 
-      this.setState({
-        events: this.state.events,
-        showForm: !this.state.showForm
-      });
-    }
-  }
-
-  _showForm(e) {
-    e.preventDefault();
     this.setState({
-      showForm: !this.state.showForm
+      ...this.initialEventState,
+      events: this.state.events
     });
   }
 
   _onSubmit(e) {
     e.preventDefault();
+    console.log('you have submitted');
   }
 }
