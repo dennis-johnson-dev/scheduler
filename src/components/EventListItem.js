@@ -89,17 +89,17 @@ export default class EventListItem extends React.Component {
       this.props.connectDropTarget(
         <li
           data-id={ this.props.event.id }
-          className="editableForm-item"
+          className="event-list-item item"
           onMouseLeave={ (e) => this._mouseOver(e, false) }
           onMouseOver={ (e) => this._mouseOver(e, true) }>
 
           <div className="event-description">
 
             <div className="event-title" onClick={ (e) => this.props.toggleEditMode(e, true, 'title') }>
-              <strong>Title:</strong> { this.props.event.title }
+              Title: { this.props.event.title }
             </div>
             <div className="event-duration" onClick={ (e) => this.props.toggleEditMode(e, true, 'duration') }>
-              <strong>Duration:</strong> { this.props.event.duration }
+              Duration: { this.props.event.duration }
             </div>
             {
               this._getDateForEvent(this.props.event)

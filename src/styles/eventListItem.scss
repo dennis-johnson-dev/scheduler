@@ -1,4 +1,19 @@
-.editableForm-item {
+.event-list-item {
+  list-style: none;
+  margin-bottom: 0.2rem;
+}
+
+.event-list-form {
+  margin: 0.8rem 0 0 0;
+
+  .event-title, .event-duration {
+    input {
+      margin-left: 0.3rem;
+    }
+  }
+}
+
+.event-list-item.item {
   margin: 0.8rem 0 0;
   padding-bottom: 0.2rem;
 
@@ -7,7 +22,16 @@
   }
 
   .deleteItem {
+    box-sizing: border-box;
     display: inline-block;
-    margin: 0 0.3rem 0 0;
+    float: right;
+    opacity: 0.4;
+    padding: 0rem;
+    margin: 0 0 0.3rem 1rem;
+
+    &:hover {
+      opacity: 1;
+    }
   }
+
 }
