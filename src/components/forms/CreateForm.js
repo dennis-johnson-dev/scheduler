@@ -1,4 +1,3 @@
-import DatePicker from 'react-datepicker';
 import React from 'react';
 
 export default class CreatForm extends React.Component {
@@ -16,6 +15,7 @@ export default class CreatForm extends React.Component {
           <input
             onChange={ (e) => this.props.handleChange("title", "text", e) }
             name="title"
+            placeholder="title"
             ref="title"
             type="text"
             value={ this.props.title } />
@@ -29,36 +29,14 @@ export default class CreatForm extends React.Component {
             ref="duration"
             type="number"
             value={ this.props.duration } />
-        </div>
-        <div className="event event-date">
-          <label>On a date:</label>
-          <input
-            type="checkbox"
-            checked={ this.props.hasDate }
-            onChange={ (e) => this.props.handleChange("hasDate", "checkbox", e) } />
-          {
-            this._getDatePicker()
-          }
+          <select onChange={ (e) => this.props.handleChange("duration", "text", e) }>
+            <option value="30">30 minutes</option>
+            <option value="60">60 minutes</option>
+          </select>
         </div>
         <div className="event event-add">
           <button onClick={ (e) => this.props.addEvent(e) }>Add Event</button>
         </div>
-      </div>
-    );
-  }
-
-
-  _getDatePicker() {
-    const deselected = !this.props.hasDate ? ' deselected' : '';
-    const className = `event-date-picker${deselected}`;
-    return (
-      <div>
-        <label>Event Date:</label>
-        <DatePicker
-          className={ className }
-          disabled={ !this.props.hasDate }
-          selected={ this.props.date }
-          onChange={ (e) => this.props.handleChange("date", "date", e) } />
       </div>
     );
   }

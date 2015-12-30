@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React from 'react';
+import DatePicker from 'react-datepicker';
 import uuid from 'uuid';
 
 import CreateForm from './forms/CreateForm';
@@ -10,14 +11,19 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default class CreateEvent extends React.Component {
   initialEventState = {
-    duration: 12,
+    duration: '',
     date: moment(),
     hasDate: false,
-    title: 'hai'
+    title: ''
   }
 
   initialState = {
-    events: []
+    events: [],
+    editMode: false,
+    selected: {
+      id: '',
+      type: ''
+    }
   }
 
   constructor(props, context) {
@@ -29,25 +35,42 @@ export default class CreateEvent extends React.Component {
     };
 
     this.typeValueMap = {
-      date: e => e,
       checkbox: e => e.target.checked,
+      date: e => e,
+      number: e => e.target.value,
       text: e => e.target.value
     };
 
     this._onSubmit = this._onSubmit.bind(this);
     this._addEvent = this._addEvent.bind(this);
+    this._deleteItem = this._deleteItem.bind(this);
     this._handleChange = this._handleChange.bind(this);
+    this._handleEventChange = this._handleEventChange.bind(this);
+    this._toggleEditMode = this._toggleEditMode.bind(this);
   }
 
   render() {
     return (
       <div className="create-event">
-        <div className="add-event-form">
+        <div className="add-event-form" onClick={ (e) => this._toggleEditMode(e, false) } >
           <form onSubmit={ this._onSubmit }>
             <input
               className=""
               type="submit"
               value="Submit" />
+            <div>
+              <p>Add project specific information</p>
+              <div className="event event-date">
+                <label>On a date:</label>
+                <input
+                  type="checkbox"
+                  checked={ this.state.hasDate }
+                  onChange={ (e) => this._handleChange("hasDate", "checkbox", e) } />
+                {
+                  this._getDatePicker()
+                }
+              </div>
+            </div>
             <CreateForm
               addEvent={ this._addEvent }
               date={ this.state.date }
@@ -57,9 +80,75 @@ export default class CreateEvent extends React.Component {
               title={ this.state.title } />
           </form>
         </div>
-        <EventList events={ this.state.events } />
+        <EventList
+          deleteItem={ this._deleteItem }
+          editMode={ this.state.editMode }
+          handleEventChange={ this._handleEventChange }
+          toggleEditMode={ this._toggleEditMode }
+          events={ this.state.events }
+          selected={ this.state.selected }/>
       </div>
     );
+  }
+
+  _getDatePicker() {
+    const deselected = !this.state.hasDate ? ' deselected' : '';
+    const className = `event-date-picker${deselected}`;
+    return (
+      <div>
+        <label>Event Date:</label>
+        <DatePicker
+          className={ className }
+          disabled={ !this.state.hasDate }
+          selected={ this.state.date }
+          onChange={ (e) => this._handleChange("date", "date", e) } />
+      </div>
+    );
+  }
+
+  _deleteItem(id) {
+    const index = this.state.events.findIndex((event) => {
+      return event.id === id;
+    });
+
+    this.state.events.splice(index, 1);
+    this.setState({
+      events: this.state.events
+    });
+  }
+
+  _toggleEditMode(e, shouldEnable, type) {
+    let id = this.state.selected;
+    if (shouldEnable) {
+      id = this._getEventId(e.target);
+    }
+
+    this.setState({
+      editMode: shouldEnable,
+      selected: {
+        type: type || '',
+        id
+      }
+    });
+  }
+
+  _getEventId(node) {
+    if (node.dataset.id) {
+      return node.dataset.id;
+    } else {
+      return this._getEventId(node.parentElement);
+    }
+  }
+
+  _handleEventChange(e, id) {
+    const eventIndex = this.state.events.findIndex((event) => event.id === id);
+    const property = e.target.name;
+    const type = e.target.type;
+    this.state.events[eventIndex][property] = this._getValue(type, e);
+
+    this.setState({
+      events: this.state.events
+    });
   }
 
   _handleChange(stateKey, type, val) {
@@ -83,15 +172,15 @@ export default class CreateEvent extends React.Component {
   _addEvent(e) {
     e.preventDefault();
     this.state.events.push({
-      date: this.state.hasDate ? this.state.date : null,
       duration: this.state.duration,
-      hasDate: this.state.hasDate,
-      title: this.state.title,
-      id: uuid.v4()
+      id: uuid.v4(),
+      index: this.state.events.length,
+      title: this.state.title
     });
 
     this.setState({
-      ...this.initialEventState,
+      duration: this.initialEventState.duration,
+      title: this.initialEventState.title,
       events: this.state.events
     });
   }

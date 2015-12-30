@@ -22,7 +22,6 @@ import './styles/styles.scss';
 
 const socket = SocketIOClient.default();
 socket.on('connect', (event) => {
-  console.log('has connected on client');
 });
 
 socket.on('yo received', (event) => {

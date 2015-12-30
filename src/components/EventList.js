@@ -1,43 +1,44 @@
 import React from 'react';
 
+import EventListForm from './forms/EventListForm';
+import EventListItem from './EventListItem';
+
 export default class EventList extends React.Component {
   static propTypes = {
-    events: React.PropTypes.array.isRequired
+    deleteItem: React.PropTypes.func.isRequired,
+    editMode: React.PropTypes.bool.isRequired,
+    events: React.PropTypes.array.isRequired,
+    handleEventChange: React.PropTypes.func.isRequired,
+    selected: React.PropTypes.object.isRequired,
+    toggleEditMode: React.PropTypes.func.isRequired
   }
 
   render() {
     return (
-      <ul>
+      <ul className="event editableForm">
         {
           this.props.events.map((event, index) => {
-            return (
-              <li key={ event.id }>
-                <div className="event event-title">
-                  { event.title }
-                </div>
-                <div className="event event-duration">
-                  { event.duration }
-                </div>
-                {
-                  this._getDateForEvent(event)
-                }
-              </li>
-            );
+            if (this.props.editMode && this.props.selected.id === event.id) {
+              return (
+                <EventListForm
+                  event={ event }
+                  handleEventChange={ this.props.handleEventChange }
+                  key={ event.id }
+                  selected={ this.props.selected }
+                  toggleEditMode={ this.props.toggleEditMode } />
+              );
+            } else {
+              return (
+                <EventListItem
+                  deleteItem={ this.props.deleteItem }
+                  event={ event }
+                  key={ event.id }
+                  toggleEditMode={ this.props.toggleEditMode } />
+              );
+            }
           })
         }
       </ul>
     );
-  }
-
-  _getDateForEvent(event) {
-    if (event.hasDate) {
-      return (
-        <div className="event event-date">
-          { event.date.format('M/D - h:mm') }
-        </div>
-      );
-    } else {
-      return null;
-    }
   }
 }

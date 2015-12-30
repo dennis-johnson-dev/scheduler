@@ -57,11 +57,16 @@
       }
     }
 
-    .event-duration {
-    }
-
     .event-add {
       margin-top: 0.5rem;
+    }
+  }
+
+  .editableForm-item {
+    margin-bottom: 0.4rem;
+
+    .deleteItem {
+      padding-bottom: 0.2rem;
     }
   }
 }
