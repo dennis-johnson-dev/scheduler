@@ -46,6 +46,7 @@ export default class CreateEvent extends React.Component {
     this._deleteItem = this._deleteItem.bind(this);
     this._handleChange = this._handleChange.bind(this);
     this._handleEventChange = this._handleEventChange.bind(this);
+    this._moveItem = this._moveItem.bind(this);
     this._toggleEditMode = this._toggleEditMode.bind(this);
   }
 
@@ -84,11 +85,25 @@ export default class CreateEvent extends React.Component {
           deleteItem={ this._deleteItem }
           editMode={ this.state.editMode }
           handleEventChange={ this._handleEventChange }
+          moveItem={ this._moveItem }
           toggleEditMode={ this._toggleEditMode }
           events={ this.state.events }
           selected={ this.state.selected }/>
       </div>
     );
+  }
+
+  _moveItem(dragIndex, hoverIndex) {
+    const dragEvent = this.state.events[dragIndex];
+    this.state.events[dragIndex] = this.state.events[hoverIndex];
+    this.state.events[dragIndex].index = dragIndex;
+
+    this.state.events[hoverIndex] = dragEvent;
+    this.state.events[hoverIndex].index = hoverIndex;
+
+    this.setState({
+      events: this.state.events
+    });
   }
 
   _getDatePicker() {
@@ -112,8 +127,13 @@ export default class CreateEvent extends React.Component {
     });
 
     this.state.events.splice(index, 1);
+
+    const events = this.state.events.map((event, index) => {
+      return event.index = index, event;
+    });
+
     this.setState({
-      events: this.state.events
+      events
     });
   }
 

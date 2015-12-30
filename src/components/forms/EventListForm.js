@@ -1,5 +1,21 @@
 import React from 'react';
+import { DragSource, DropTarget } from 'react-dnd';
 
+const dragSource = {
+  beginDrag(props, monitor, component) {
+    console.log('draggin')
+    const { id, index } = props;
+    return {
+      id,
+      index
+    };
+  }
+};
+
+@DragSource('event', dragSource, (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
+}))
 export default class EventListForm extends React.Component {
   static propTypes = {
     event: React.PropTypes.object.isRequired,
@@ -14,7 +30,7 @@ export default class EventListForm extends React.Component {
   }
 
   render() {
-    return (
+    return this.props.connectDragSource(
       <li>
         <div className="event-title">
           <label>Title:</label>

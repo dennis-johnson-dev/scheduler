@@ -1,11 +1,13 @@
 .editableForm-item {
+  margin: 0.8rem 0 0;
   padding-bottom: 0.2rem;
-  
+
   .event-description {
     display: inline-block;
   }
 
   .deleteItem {
     display: inline-block;
+    margin: 0 0.3rem 0 0;
   }
 }
