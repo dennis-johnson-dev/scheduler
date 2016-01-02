@@ -74,6 +74,7 @@ export default class EventListItem extends React.Component {
   static propTypes = {
     deleteItem: React.PropTypes.func.isRequired,
     event: React.PropTypes.object.isRequired,
+    index: React.PropTypes.number.isRequired,
     toggleEditMode: React.PropTypes.func.isRequired
   }
 
@@ -95,10 +96,18 @@ export default class EventListItem extends React.Component {
 
           <div className="event-description">
 
-            <div className="event-title" onClick={ (e) => this.props.toggleEditMode(e, true, 'title') }>
+            <div
+              className="event-title"
+              onClick={ (e) => this.props.toggleEditMode(e, true, 'title') }
+              onFocus={ (e) => this.props.toggleEditMode(e, true, 'title') }
+              tabIndex={ this.props.index * 2 }>
               Title: { this.props.event.title }
             </div>
-            <div className="event-duration" onClick={ (e) => this.props.toggleEditMode(e, true, 'duration') }>
+            <div
+              className="event-duration"
+              onClick={ (e) => this.props.toggleEditMode(e, true, 'duration') }
+              onFocus={ (e) => this.props.toggleEditMode(e, true, 'duration') }
+              tabIndex={ this.props.index * 2 + 2 }>
               Duration: { this.props.event.duration }
             </div>
             {

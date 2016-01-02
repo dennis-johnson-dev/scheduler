@@ -35,7 +35,7 @@ export default class CreatForm extends React.Component {
           </select>
         </div>
         <div className="event event-add">
-          <button onClick={ (e) => this.props.addEvent(e) }>Add Event</button>
+          <button tabIndex="0" onClick={ (e) => this.props.addEvent(e) }>Add Event</button>
         </div>
       </div>
     );

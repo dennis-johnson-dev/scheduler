@@ -72,6 +72,7 @@ export default class EventListForm extends React.Component {
     event: React.PropTypes.object.isRequired,
     handleEventChange: React.PropTypes.func.isRequired,
     selected: React.PropTypes.object.isRequired,
+    index: React.PropTypes.number.isRequired,
     toggleEditMode: React.PropTypes.func.isRequired
   }
 
@@ -83,12 +84,15 @@ export default class EventListForm extends React.Component {
   render() {
     return this.props.connectDragSource(
       this.props.connectDropTarget(
-        <li className="event-list-item event-list-form">
+        <li
+          className="event-list-item event-list-form">
+
           <div className="event-title">
             <label>Title:</label>
             <input
               name="title"
               ref="title"
+              tabIndex={ this.props.index * 2 + 1 }
               type="text"
               onChange={ (e) => this.props.handleEventChange(e, this.props.event.id) }
               value={ this.props.event.title } />
@@ -98,6 +102,7 @@ export default class EventListForm extends React.Component {
             <input
               name="duration"
               ref="duration"
+              tabIndex={ this.props.index * 2 + 2 }
               type="number"
               onChange={ (e) => this.props.handleEventChange(e, this.props.event.id) }
               value={ this.props.event.duration } />

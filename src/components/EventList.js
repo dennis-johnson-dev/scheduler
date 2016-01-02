@@ -27,6 +27,7 @@ export default class EventList extends React.Component {
                 <EventListForm
                   event={ event }
                   handleEventChange={ this.props.handleEventChange }
+                  index={ index }
                   key={ event.id }
                   moveItem={ this.props.moveItem }
                   selected={ this.props.selected }
@@ -37,6 +38,7 @@ export default class EventList extends React.Component {
                 <EventListItem
                   deleteItem={ this.props.deleteItem }
                   event={ event }
+                  index={ index }
                   key={ event.id }
                   moveItem={ this.props.moveItem }
                   toggleEditMode={ this.props.toggleEditMode } />
