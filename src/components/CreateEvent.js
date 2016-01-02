@@ -3,7 +3,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import uuid from 'uuid';
 
-import CreateForm from './forms/CreateForm';
+import AddNewForm from './forms/AddNewForm';
 import EventList from './EventList';
 
 import '../styles/event.scss';
@@ -72,7 +72,7 @@ export default class CreateEvent extends React.Component {
                 }
               </div>
             </div>
-            <CreateForm
+            <AddNewForm
               addEvent={ this._addEvent }
               date={ this.state.date }
               duration={ this.state.duration }
@@ -88,7 +88,7 @@ export default class CreateEvent extends React.Component {
           moveItem={ this._moveItem }
           toggleEditMode={ this._toggleEditMode }
           events={ this.state.events }
-          selected={ this.state.selected }/>
+          selected={ this.state.selected } />
       </div>
     );
   }
@@ -208,5 +208,6 @@ export default class CreateEvent extends React.Component {
   _onSubmit(e) {
     e.preventDefault();
     console.log('you have submitted');
+    console.log(this.state.events);
   }
 }

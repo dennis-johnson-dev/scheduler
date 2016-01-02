@@ -1,64 +1,9 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 
-const dragSource = {
-  beginDrag(props, monitor, component) {
-    const { event } = props;
-    return {
-      id: event.id,
-      index: event.index
-    };
-  }
-};
-
-const dragTarget = {
-  hover(props, monitor, component) {
-    const dragIndex = monitor.getItem().index;
-    const dragId = monitor.getItem().id;
-
-    const hoverIndex = props.event.index;
-
-    // Don't replace items with themselves
-    if (dragIndex === hoverIndex) {
-      return;
-    }
-
-    // Determine rectangle on screen
-    const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
-
-    // Get vertical middle
-    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-    // Determine mouse position
-    const clientOffset = monitor.getClientOffset();
-
-    // Get pixels to the top
-    const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-    // Only perform the move when the mouse has crossed half of the items height
-    // When dragging downwards, only move when the cursor is below 50%
-    // When dragging upwards, only move when the cursor is above 50%
-
-    // Dragging downwards
-    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-      return;
-    }
-
-    // Dragging upwards
-    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-      return;
-    }
-
-    // Time to actually perform the action
-    props.moveItem(dragIndex, hoverIndex);
-
-    // Note: we're mutating the monitor item here!
-    // Generally it's better to avoid mutations,
-    // but it's good here for the sake of performance
-    // to avoid expensive index searches.
-    monitor.getItem().index = hoverIndex;
-  }
-};
+import dragTarget from '../DnD/dragTarget';
+import dragSource from '../DnD/dragSource';
 
 @DropTarget('event', dragTarget, connect => ({
   connectDropTarget: connect.dropTarget()
@@ -69,6 +14,7 @@ const dragTarget = {
 }))
 export default class EventListForm extends React.Component {
   static propTypes = {
+    deleteItem: React.PropTypes.func.isRequired,
     event: React.PropTypes.object.isRequired,
     handleEventChange: React.PropTypes.func.isRequired,
     selected: React.PropTypes.object.isRequired,
@@ -76,39 +22,118 @@ export default class EventListForm extends React.Component {
     toggleEditMode: React.PropTypes.func.isRequired
   }
 
-  componentDidMount() {
-    const type = this.props.selected.type;
-    this.refs[type].select();
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      editMode: false
+    };
+
+    this._handleClickOnListItem = this._handleClickOnListItem.bind(this);
+    this._toggleEditMode = this._toggleEditMode.bind(this);
+  }
+
+  _getField(isEditMode, type) {
+    const offset = this.props.index * 2;
+
+    if (true) {
+      if (type === 'duration') {
+
+      }
+    }
+
+    return (
+      <span
+        onClick={ (e) => this._toggleEditMode(e, true, type) }
+        onFocus={ (e) => this._toggleEditMode(e, true, type) }
+        tabIndex={ offset + 5 }
+        >
+          { this.props.event[type] }
+      </span>
+    );
   }
 
   render() {
     return this.props.connectDragSource(
       this.props.connectDropTarget(
         <li
-          className="event-list-item event-list-form">
+          className="event-list-item event-list-form"
+          data-id={ this.props.event.id }
+          onBlur={ (e) => this._toggleEditMode(e, false) }
+          onClick={ (e) => this._toggleEditMode(e, false) }
+          >
 
-          <div className="event-title">
+          <div
+            className="event-title"
+            data-type="title">
             <label>Title:</label>
-            <input
-              name="title"
-              ref="title"
-              tabIndex={ this.props.index * 2 + 1 }
-              type="text"
-              onChange={ (e) => this.props.handleEventChange(e, this.props.event.id) }
-              value={ this.props.event.title } />
+            {
+              this._getTitleField(this.props.index)
+            }
           </div>
-          <div className="event event-duration">
+          <div
+            className="event event-duration"
+            data-type="duration">
             <label>Duration:</label>
-            <input
-              name="duration"
-              ref="duration"
-              tabIndex={ this.props.index * 2 + 2 }
-              type="number"
-              onChange={ (e) => this.props.handleEventChange(e, this.props.event.id) }
-              value={ this.props.event.duration } />
+            {
+              this._getDurationField(this.props.index)
+            }
           </div>
+
         </li>
       )
     );
+  }
+
+  _getTitleField(index) {
+    return (
+      <input
+      name="title"
+      ref="title"
+      tabIndex={ index * 2 + 5 }
+      type="text"
+      onBlur={(e) => {
+        e.stopPropagation();
+      }}
+      onFocus={ (e) => this._toggleEditMode(e, true, 'title') }
+      onClick={ (e) => this._toggleEditMode(e, true, 'title') }
+      onChange={ (e) => this.props.handleEventChange(e, this.props.event.id) }
+      value={ this.props.event.title } />
+    );
+  }
+
+  _getDurationField(index) {
+    return (
+      <input
+      name="duration"
+      ref="duration"
+      tabIndex={ index * 2 + 6 }
+      type="number"
+      onBlur={(e) => {
+        e.stopPropagation();
+      }}
+      onFocus={ (e) => this._toggleEditMode(e, true, 'duration') }
+      onClick={ (e) => this._toggleEditMode(e, true, 'duration') }
+      onChange={ (e) => this.props.handleEventChange(e, this.props.event.id) }
+      value={ this.props.event.duration } />
+    );
+  }
+
+  _handleClickOnListItem(e) {
+    this._toggleEditMode(e, true, 'title');
+  }
+
+  _focusItem(ref) {
+    if (this.refs[ref]) {
+      this.refs[ref].select();
+    }
+  }
+
+  _toggleEditMode(e, toggle, type) {
+    this.setState({
+      editMode: toggle,
+      selected: type
+    }, () => {
+      this._focusItem(type);
+    });
   }
 }

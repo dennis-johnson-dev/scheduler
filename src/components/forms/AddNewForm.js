@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class CreatForm extends React.Component {
+export default class AddNewForm extends React.Component {
   static propTypes = {
     addEvent: React.PropTypes.func.isRequired,
     title: React.PropTypes.string.isRequired,
@@ -17,6 +17,7 @@ export default class CreatForm extends React.Component {
             name="title"
             placeholder="title"
             ref="title"
+            tabIndex={ 2 }
             type="text"
             value={ this.props.title } />
         </div>
@@ -27,15 +28,18 @@ export default class CreatForm extends React.Component {
             name="duration"
             placeholder="seconds"
             ref="duration"
+            tabIndex={ 2 }
             type="number"
             value={ this.props.duration } />
-          <select onChange={ (e) => this.props.handleChange("duration", "text", e) }>
+          <select
+            onChange={ (e) => this.props.handleChange("duration", "text", e) }
+            tabIndex={ 2 }>
             <option value="30">30 minutes</option>
             <option value="60">60 minutes</option>
           </select>
         </div>
         <div className="event event-add">
-          <button tabIndex="0" onClick={ (e) => this.props.addEvent(e) }>Add Event</button>
+          <button tabIndex={ 4 } onClick={ (e) => this.props.addEvent(e) }>Add Event</button>
         </div>
       </div>
     );

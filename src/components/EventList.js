@@ -17,33 +17,30 @@ export default class EventList extends React.Component {
     toggleEditMode: React.PropTypes.func.isRequired
   }
 
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      editMode: false
+    };
+  }
+
   render() {
     return (
-      <ul className="event editableForm">
+      <ul className="event editableForm" onBlur={ () => this.setState({ editMode: false }) }>
         {
           this.props.events.map((event, index) => {
-            if (this.props.editMode && this.props.selected.id === event.id) {
               return (
                 <EventListForm
+                  deleteItem={ this.props.deleteItem }
+                  editMode={ this.state.editMode }
                   event={ event }
                   handleEventChange={ this.props.handleEventChange }
-                  index={ index }
+                  index={ index * 2 }
                   key={ event.id }
                   moveItem={ this.props.moveItem }
                   selected={ this.props.selected }
                   toggleEditMode={ this.props.toggleEditMode } />
               );
-            } else {
-              return (
-                <EventListItem
-                  deleteItem={ this.props.deleteItem }
-                  event={ event }
-                  index={ index }
-                  key={ event.id }
-                  moveItem={ this.props.moveItem }
-                  toggleEditMode={ this.props.toggleEditMode } />
-              );
-            }
           })
         }
       </ul>
