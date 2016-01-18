@@ -1,8 +1,6 @@
 import Immutable from 'immutable';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as SocketIOClient from 'socket.io-client';
-const socket = SocketIOClient.default();
 
 import EventsContainer from './EventsContainer';
 

@@ -35,18 +35,11 @@ export default class EventListForm extends React.Component {
   _getField(isEditMode, type) {
     const offset = this.props.index * 2;
 
-    if (true) {
-      if (type === 'duration') {
-
-      }
-    }
-
     return (
       <span
         onClick={ (e) => this._toggleEditMode(e, true, type) }
         onFocus={ (e) => this._toggleEditMode(e, true, type) }
-        tabIndex={ offset + 5 }
-        >
+        tabIndex={ offset + 5 } >
           { this.props.event[type] }
       </span>
     );
@@ -77,6 +70,9 @@ export default class EventListForm extends React.Component {
             {
               this._getDurationField(this.props.index)
             }
+          </div>
+          <div className="edit-controls">
+            <button onClick={() => this.props.deleteItem(this.props.event.id) }>Close</button>
           </div>
 
         </li>

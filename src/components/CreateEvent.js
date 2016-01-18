@@ -1,15 +1,18 @@
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import React from 'react';
-import DatePicker from 'react-datepicker';
 import uuid from 'uuid';
 
+import * as EventActions from '../actions';
 import AddNewForm from './forms/AddNewForm';
 import EventList from './EventList';
 
 import '../styles/event.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
-export default class CreateEvent extends React.Component {
+export class CreateEvent extends React.Component {
   initialEventState = {
     duration: '',
     date: moment(),
@@ -207,7 +210,20 @@ export default class CreateEvent extends React.Component {
 
   _onSubmit(e) {
     e.preventDefault();
-    console.log('you have submitted');
-    console.log(this.state.events);
+    this.props.addNewEvent(this.state.events);
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addNewEvent: bindActionCreators(EventActions.addNewEvent, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateEvent);

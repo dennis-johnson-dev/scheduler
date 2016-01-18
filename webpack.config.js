@@ -4,7 +4,7 @@ var webpack = require('webpack');
 module.exports = {
   devtool: '#inline-source-map',
   entry: [
-    'webpack-hot-middleware/client?reload',
+    'webpack-hot-middleware/client?reload=true',
     './src/index'
   ],
   output: {

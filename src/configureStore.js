@@ -1,13 +1,14 @@
-import { createStore } from 'redux';
-
-import { resetState } from './actions';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
 export default function configureStore() {
   const rootReducer = require('./reducers');
-  const store = createStore(rootReducer);
+  const createStoreWithMiddleware = applyMiddleware(
+    thunk
+  )(createStore);
+  const store = createStoreWithMiddleware(rootReducer);
 
   if (module.hot) {
-    store.dispatch(resetState());
     module.hot.accept('./reducers', () => {
       const nextReducers = require('./reducers');
       store.replaceReducer(nextReducers);

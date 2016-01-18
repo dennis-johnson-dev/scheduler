@@ -1,14 +1,11 @@
 import _ from 'lodash';
+import { request } from '../api/client';
 
-import { ADD_EVENT, CURRENT_TIME_SET, STATE_RESET } from '../constants';
-
-export function addEvent(text) {
-  return {
-    type: ADD_EVENT,
-    payload: text,
-    id: _.uniqueId()
-  };
-}
+import {
+  ADD_EVENT,
+  CURRENT_TIME_SET,
+  STATE_RESET
+} from '../constants';
 
 export function setCurrentTime(currentTime) {
   return {
@@ -20,5 +17,18 @@ export function setCurrentTime(currentTime) {
 export function resetState() {
   return {
     type: STATE_RESET
+  };
+}
+
+export const addNewEvent = (state) => {
+  return async (dispatch, getState) => {
+    try {
+      const result = await request({
+        method: 'post',
+        url: '/api/events'
+      });
+    } catch (e) {
+      console.log('api call failed');
+    }
   };
 }

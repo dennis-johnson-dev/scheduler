@@ -1,40 +1,48 @@
-var path = require('path');
-var express = require('express');
-var webpack = require('webpack');
-var config = require('./webpack.config');
+import Path from 'path';
+import Inert from 'inert';
+import Hapi from 'hapi';
+import Webpack from 'webpack';
+import WebpackPlugin from 'hapi-webpack-plugin';
+import config from './webpack.config';
 
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var compiler = webpack(config);
-
-app.use(require('webpack-dev-middleware')(compiler, {
-  noInfo: true,
-  publicPath: config.output.publicPath,
-  reload: true
-}));
-
-app.use(express.static('./'));
-
-app.use(require('webpack-hot-middleware')(compiler));
-
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
-});
-
-io.on('connection', function(socket) {
-  console.log('a user has connected');
-  socket.on('yo', function(msg) {
-    console.log('received yo');
-    io.emit('yo received');
+export const buildSite = () => {
+  const server = new Hapi.Server();
+  server.connection({
+    port: 3000
   });
-});
 
-http.listen(3000, 'localhost', function(err) {
-  if (err) {
-    console.log(err);
-    return;
-  }
+  const compiler = Webpack(config);
+  const assets = {
+    noInfo: true,
+    publicPath: config.output.publicPath,
+    reload: true
+  };
+  const hot = {};
 
-  console.log('Listening at http://localhost:3000');
-});
+  server.register([{
+    register: WebpackPlugin,
+    options: {
+      compiler,
+      assets,
+      hot
+    }
+  }, {
+    register: Inert
+  }], (error) => {
+    if (error) {
+      return console.error(error);
+    }
+
+    server.route({
+      method: 'GET',
+      path: '/',
+      handler: (request, reply) => {
+        reply.file(Path.resolve('./index.html'));
+      }
+    });
+
+    server.start(() => {
+      console.log('Server running at:', server.info.uri);
+    });
+  });
+};

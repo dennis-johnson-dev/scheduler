@@ -8,7 +8,6 @@ import { connect, Provider } from 'react-redux';
 import { Router, Route } from 'react-router';
 import { combineReducers } from 'redux';
 import { syncReduxAndRouter } from 'redux-simple-router';
-import * as SocketIOClient from 'socket.io-client';
 
 import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 
@@ -19,14 +18,6 @@ import configureStore from './configureStore';
 import routes from './routes';
 
 import './styles/styles.scss';
-
-const socket = SocketIOClient.default();
-socket.on('connect', (event) => {
-});
-
-socket.on('yo received', (event) => {
-  console.log('yo ack')
-});
 
 const rootStore = configureStore();
 const history = createHistory();
