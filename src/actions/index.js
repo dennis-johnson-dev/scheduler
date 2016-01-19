@@ -20,12 +20,13 @@ export function resetState() {
   };
 }
 
-export const addNewEvent = (state) => {
+export const addNewEvent = (events) => {
   return async (dispatch, getState) => {
     try {
       const result = await request({
         method: 'post',
-        url: '/api/events'
+        url: '/api/events',
+        body: events
       });
     } catch (e) {
       console.log('api call failed');
