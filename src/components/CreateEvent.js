@@ -21,7 +21,9 @@ export class CreateEvent extends React.Component {
   }
 
   initialState = {
-    events: [],
+    event: {
+      events: []
+    },
     editMode: false,
     selected: {
       id: '',
@@ -90,22 +92,22 @@ export class CreateEvent extends React.Component {
           handleEventChange={ this._handleEventChange }
           moveItem={ this._moveItem }
           toggleEditMode={ this._toggleEditMode }
-          events={ this.state.events }
+          events={ this.state.event.events }
           selected={ this.state.selected } />
       </div>
     );
   }
 
   _moveItem(dragIndex, hoverIndex) {
-    const dragEvent = this.state.events[dragIndex];
-    this.state.events[dragIndex] = this.state.events[hoverIndex];
-    this.state.events[dragIndex].index = dragIndex;
+    const dragEvent = this.state.event.events[dragIndex];
+    this.state.event.events[dragIndex] = this.state.event.events[hoverIndex];
+    this.state.event.events[dragIndex].index = dragIndex;
 
-    this.state.events[hoverIndex] = dragEvent;
-    this.state.events[hoverIndex].index = hoverIndex;
+    this.state.event.events[hoverIndex] = dragEvent;
+    this.state.event.events[hoverIndex].index = hoverIndex;
 
     this.setState({
-      events: this.state.events
+      events: this.state.event
     });
   }
 
@@ -125,13 +127,13 @@ export class CreateEvent extends React.Component {
   }
 
   _deleteItem(id) {
-    const index = this.state.events.findIndex((event) => {
+    const index = this.state.event.events.findIndex((event) => {
       return event.id === id;
     });
 
-    this.state.events.splice(index, 1);
+    this.state.event.events.splice(index, 1);
 
-    const events = this.state.events.map((event, index) => {
+    const events = this.state.event.events.map((event, index) => {
       return event.index = index, event;
     });
 
@@ -164,13 +166,13 @@ export class CreateEvent extends React.Component {
   }
 
   _handleEventChange(e, id) {
-    const eventIndex = this.state.events.findIndex((event) => event.id === id);
+    const eventIndex = this.state.event.events.findIndex((event) => event.id === id);
     const property = e.target.name;
     const type = e.target.type;
-    this.state.events[eventIndex][property] = this._getValue(type, e);
+    this.state.event.events[eventIndex][property] = this._getValue(type, e);
 
     this.setState({
-      events: this.state.events
+      event: this.state.event
     });
   }
 
@@ -194,23 +196,23 @@ export class CreateEvent extends React.Component {
 
   _addEvent(e) {
     e.preventDefault();
-    this.state.events.push({
+    this.state.event.events.push({
       duration: this.state.duration,
       id: uuid.v4(),
-      index: this.state.events.length,
+      index: this.state.event.events.length,
       title: this.state.title
     });
 
     this.setState({
       duration: this.initialEventState.duration,
       title: this.initialEventState.title,
-      events: this.state.events
+      event: this.state.event
     });
   }
 
   _onSubmit(e) {
     e.preventDefault();
-    this.props.addNewEvent(this.state.events);
+    this.props.addNewEvent(this.state.event);
   }
 }
 

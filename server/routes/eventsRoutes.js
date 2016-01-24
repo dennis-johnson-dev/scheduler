@@ -3,8 +3,10 @@ export default [
     method: 'POST',
     path: '/api/events',
     handler: (request, reply) => {
-      console.log(request.payload)
-      reply('Hello!');
+      const db = request.server.plugins['hapi-mongodb'].db;
+      db.collection('events').insertOne(request.payload, (err, result) => {
+        reply(result);
+      });
     }
   }
 ];

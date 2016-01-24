@@ -1,6 +1,7 @@
 import hapiMongoDB from 'hapi-mongodb';
 
 const mongoUri = process.env.SCHEDULER_MONGO_URI;
+
 const dbOpts = {
   "url": mongoUri,
   "settings": {
