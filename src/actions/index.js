@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { request } from '../api/client';
 
 import {
-  ADD_EVENT,
+  EVENT_ADDED,
   CURRENT_TIME_SET,
   STATE_RESET
 } from '../constants';
@@ -20,6 +20,13 @@ export function resetState() {
   };
 }
 
+export const eventAdded = (event) => {
+  return {
+    type: EVENT_ADDED,
+    payload: event
+  };
+};
+
 export const addNewEvent = (event) => {
   return async (dispatch, getState) => {
     try {
@@ -31,5 +38,7 @@ export const addNewEvent = (event) => {
     } catch (e) {
       console.log('api call failed');
     }
+
+    dispatch(eventAdded(event));
   };
 }

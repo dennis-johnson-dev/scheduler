@@ -9,12 +9,9 @@ import EventListItem from './EventListItem';
 export default class EventList extends React.Component {
   static propTypes = {
     deleteItem: React.PropTypes.func.isRequired,
-    editMode: React.PropTypes.bool.isRequired,
     events: React.PropTypes.array.isRequired,
     handleEventChange: React.PropTypes.func.isRequired,
-    moveItem: React.PropTypes.func.isRequired,
-    selected: React.PropTypes.object.isRequired,
-    toggleEditMode: React.PropTypes.func.isRequired
+    moveItem: React.PropTypes.func.isRequired
   }
 
   constructor(props, context) {
@@ -38,7 +35,6 @@ export default class EventList extends React.Component {
                   index={ index * 2 }
                   key={ event.id }
                   moveItem={ this.props.moveItem }
-                  selected={ this.props.selected }
                   toggleEditMode={ this.props.toggleEditMode } />
               );
           })

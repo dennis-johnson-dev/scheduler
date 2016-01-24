@@ -17,9 +17,7 @@ export default class EventListForm extends React.Component {
     deleteItem: React.PropTypes.func.isRequired,
     event: React.PropTypes.object.isRequired,
     handleEventChange: React.PropTypes.func.isRequired,
-    selected: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
-    toggleEditMode: React.PropTypes.func.isRequired
+    index: React.PropTypes.number.isRequired
   }
 
   constructor(props, context) {

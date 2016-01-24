@@ -1,9 +1,9 @@
 import Immutable from 'immutable';
 import moment from 'moment';
-import { routeReducer as routing } from 'redux-simple-router';
+import { routeReducer as routing } from 'react-router-redux';
 import { combineReducers } from 'redux';
 
-import { ADD_EVENT, CURRENT_TIME_SET, STATE_RESET } from '../constants';
+import { EVENT_ADDED, CURRENT_TIME_SET, STATE_RESET } from '../constants';
 
 const initialState = (numOfItems) => {
   const getStartStop = (currentTime, idx) => {
@@ -47,10 +47,16 @@ const initialMaxDuration = initialState.reduce((acc, event) => {
 
 const events = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_EVENT:
+    case EVENT_ADDED:
       return state.push(Immutable.Map({
-        id: action.id,
-        text: action.payload
+        bgColor: `#fefefe`,
+        company: 'company',
+        id: parseInt(`12${15}`, 10),
+        imageUrl: `/images/person/${15}`,
+        name: 'First Last',
+        title: `y-${15}`,
+        startTime: moment().add(5, 'seconds'),
+        endTime: moment().add(5 * 2, 'seconds')
       }));
     case STATE_RESET:
       return initialState;
