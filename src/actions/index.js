@@ -1,8 +1,10 @@
 import _ from 'lodash';
+import Immutable from 'immutable';
 import { request } from '../api/client';
 
 import {
   EVENT_ADDED,
+  EVENTS_RECEIVED,
   CURRENT_TIME_SET,
   STATE_RESET
 } from '../constants';
@@ -36,9 +38,31 @@ export const addNewEvent = (event) => {
         body: event
       });
     } catch (e) {
-      console.log('api call failed');
     }
 
     dispatch(eventAdded(event));
   };
+};
+
+export const eventsReceived = (events) => {
+  return {
+    type: EVENTS_RECEIVED,
+    payload: events
+  };
 }
+
+export const fetchEvents = () => {
+  return async (dispatch, getState) => {
+    let response;
+    try {
+      response = await request({
+        method: 'get',
+        url: '/api/events'
+      });
+    } catch (e) {}
+    if (response && response.body) {
+      const result = Immutable.fromJS(response.body);
+      dispatch(eventsReceived(result));
+    }
+  };
+};

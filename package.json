@@ -4,10 +4,11 @@
   "description": "simple digital schedule",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon --watch server index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "boom": "^3.1.2",
     "good": "^6.4.0",
     "good-console": "^5.2.0",
     "hapi": "^12.1.0",
@@ -25,6 +26,7 @@
     "redux": "^3.0.4",
     "redux-simple-router": "^1.0.2",
     "redux-thunk": "^1.0.3",
+    "stream-to": "^2.0.0",
     "superagent": "^1.6.1",
     "uuid": "^2.0.1",
     "wreck": "^7.0.0"

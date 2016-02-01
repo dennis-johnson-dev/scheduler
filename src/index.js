@@ -12,6 +12,7 @@ import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 import App from './components/App';
 import CreateEvent from './components/CreateEvent';
 import Viewer from './components/Viewer';
+import Menu from './components/Menu';
 import { setCurrentTime, resetState } from './actions';
 import configureStore from './configureStore';
 import routes from './routes';
@@ -35,7 +36,8 @@ render(
   <Provider store={ rootStore }>
     <Router history={ hashHistory }>
       <Route path="/" component={ App }>
-        <IndexRoute component={ Viewer } />
+        <IndexRoute component={ Menu } />
+        <Route path="viewer/:id" component={ Viewer } />
         <Route path="create" component={ CreateEvent } />
       </Route>
     </Router>

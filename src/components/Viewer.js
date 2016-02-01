@@ -7,7 +7,15 @@ import EventsContainer from './EventsContainer';
 import '../styles/Viewer.scss';
 
 export class Viewer extends Component {
+  componentDidMount() {
+
+  }
+  
   render() {
+    if (!this.props.events) {
+      return null;
+    }
+
     return (
       <div>
         <div className="timeline-container">
@@ -48,7 +56,7 @@ export class Viewer extends Component {
   }
 }
 
-export default connect(state => {
+const mapStateToProps = (state) => {
   const { currentTime, events, maxDuration, startTime } = state;
   const currentDiff = currentTime.diff(startTime, 'seconds');
   const progress = 100 - Math.min(Math.round(currentDiff / maxDuration * 100), 100);
@@ -101,5 +109,7 @@ export default connect(state => {
     progress,
     progressBars,
     remainingDuration
-  }
-})(Viewer);
+  };
+};
+
+export default connect(mapStateToProps)(Viewer);
