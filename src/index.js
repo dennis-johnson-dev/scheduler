@@ -25,7 +25,7 @@ const endTime = moment().add(rootStore.getState().maxDuration, 'seconds');
 
 const timeout = window.setInterval(() => {
   const currentTime = moment();
-  rootStore.dispatch(setCurrentTime(currentTime));
+  // rootStore.dispatch(setCurrentTime(currentTime));
 
   if (currentTime.isAfter(endTime) || currentTime.isSame(endTime, 'seconds')) {
     window.clearTimeout(timeout);

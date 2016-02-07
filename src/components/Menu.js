@@ -10,10 +10,16 @@ export class Menu extends React.Component {
   };
 
   componentDidMount() {
-    this.props.dispatch(fetchEvents());
+    if (this.props.events.size < 1) {
+      this.props.dispatch(fetchEvents());
+    }
   }
 
   render() {
+    if (!this.props.events.size) {
+      return null;
+    }
+
     return (
       <ul>
         {

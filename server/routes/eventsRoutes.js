@@ -21,5 +21,16 @@ export default [
         reply(result);
       });
     }
+  },
+  {
+    method: 'GET',
+    path: '/api/events/{eventId}',
+    handler: (request, reply) => {
+      const db = request.server.plugins['hapi-mongodb'].db;
+      const id = request.params.eventId;
+      db.collection('events').findOne({ id }, (err, result) => {
+        reply(result);
+      });
+    }
   }
 ];
